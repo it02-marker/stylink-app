@@ -157,26 +157,31 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
           <div className="space-y-1.5">
             {filterableBrands.map((brand) => {
               const isChecked = selectedBrands.includes(brand);
+              const logo = brandLogosMap[brand];
               return (
                 <label
                   key={brand}
-                  className="flex items-center justify-between group cursor-pointer select-none py-1 px-1.5 rounded-none hover:bg-gray-100 transition"
+                  className={`flex items-center justify-between group cursor-pointer select-none py-1.5 px-2 border transition ${
+                    isChecked
+                      ? 'bg-orange-50/60 border-brand-orange text-brand-navy font-bold'
+                      : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700'
+                  }`}
                 >
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5 min-w-0">
                     <input
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => handleBrandToggle(brand)}
-                      className="w-3.5 h-3.5 rounded-none border-gray-400 text-brand-orange accent-brand-orange cursor-pointer"
+                      className="w-3.5 h-3.5 rounded-none border-gray-400 text-brand-orange accent-brand-orange cursor-pointer shrink-0"
                     />
-                    <span
-                      className={`text-xs ${isChecked ? 'font-bold text-brand-navy' : 'text-gray-700'
-                        }`}
-                    >
-                      {brand}
-                    </span>
+                    {logo && (
+                      <div className="w-5 h-4 flex items-center justify-center shrink-0">
+                        <img src={logo} alt={brand} className="max-h-full max-w-full object-contain" />
+                      </div>
+                    )}
+                    <span className="text-xs truncate">{brand}</span>
                   </div>
-                  <span className="text-[10px] text-gray-400">
+                  <span className="text-[10px] text-gray-400 font-normal shrink-0 ml-1">
                     {brandCounts[brand] || 0}
                   </span>
                 </label>
@@ -266,6 +271,49 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
               </span>
             )}
           </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-gray-300">
+          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mr-1">
+            Filter by Brand:
+          </span>
+          <button
+            type="button"
+            onClick={() => setSelectedBrands([])}
+            className={`px-3 py-1.5 text-xs font-bold uppercase transition border ${
+              selectedBrands.length === 0
+                ? 'bg-brand-navy text-white border-brand-navy'
+                : 'bg-white text-gray-700 border-gray-300 hover:border-brand-orange'
+            }`}
+          >
+            All Brands
+          </button>
+          {filterableBrands.map((brand) => {
+            const isSelected = selectedBrands.includes(brand);
+            const logo = brandLogosMap[brand];
+            return (
+              <button
+                key={brand}
+                type="button"
+                onClick={() => handleBrandToggle(brand)}
+                className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase transition border ${
+                  isSelected
+                    ? 'bg-brand-orange text-white border-brand-orange shadow-sm'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-brand-orange hover:bg-gray-50'
+                }`}
+              >
+                {logo && (
+                  <span className="w-5 h-4 flex items-center justify-center bg-white/90 p-0.5 rounded-none">
+                    <img src={logo} alt={brand} className="max-h-full max-w-full object-contain" />
+                  </span>
+                )}
+                <span>{brand}</span>
+                <span className={`text-[10px] ml-0.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  ({brandCounts[brand] || 0})
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">

@@ -115,12 +115,6 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                 )}
-                {product.availability && (
-                  <span className="absolute top-4 right-4 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 flex items-center gap-1.5 z-10">
-                    <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                    {product.availability}
-                  </span>
-                )}
                 <img
                   src={product.image}
                   alt={product.name}
@@ -206,15 +200,6 @@ export default function ProductDetailPage() {
                     <span className="font-bold text-brand-navy uppercase">Truck Compatibility</span>
                     <span className="font-semibold text-gray-800 text-right max-w-xs">
                       {product.compatibility}
-                    </span>
-                  </div>
-                )}
-
-                {product.availability && (
-                  <div className="flex justify-between items-center px-4 py-3 bg-slate-50/70 text-xs sm:text-sm">
-                    <span className="font-bold text-brand-navy uppercase">Stock Locations</span>
-                    <span className="font-bold text-emerald-600 text-right">
-                      {product.availability}
                     </span>
                   </div>
                 )}

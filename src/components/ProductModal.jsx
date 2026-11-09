@@ -87,13 +87,6 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
                   )}
                 </div>
               )}
-
-              {item.availability && (
-                <div className="absolute bottom-2 left-2 bg-black/85 text-emerald-400 text-[10px] font-bold px-2.5 py-1 border border-emerald-500/40 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  {item.availability}
-                </div>
-              )}
             </div>
 
             {/* Quick Specs */}
