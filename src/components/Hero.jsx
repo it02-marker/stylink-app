@@ -99,9 +99,8 @@ export default function Hero() {
             key={index}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
-            className={`w-3 h-3 rounded-full transition-all ${
-              currentSlide === index ? 'bg-brand-orange' : 'bg-white/40 hover:bg-white'
-            }`}
+            className={`w-3 h-3 rounded-full transition-all ${currentSlide === index ? 'bg-brand-orange' : 'bg-white/40 hover:bg-white'
+              }`}
           />
         ))}
       </div>
@@ -109,9 +108,6 @@ export default function Hero() {
       {/* Hero Content Overlay */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
         <div className="max-w-3xl">
-          <span className="inline-block py-1 px-3 border border-brand-orange text-brand-orange text-xs font-bold uppercase tracking-widest mb-6 bg-brand-navy/60 backdrop-blur-sm">
-            Commercial Vehicle Spares
-          </span>
           <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 uppercase tracking-tight leading-[1.1] drop-shadow-md">
             Helping You <br /> <span className="text-brand-orange">Not To Stop</span>
           </h1>
