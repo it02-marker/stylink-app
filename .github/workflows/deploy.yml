@@ -8,6 +8,8 @@ on:
 # Give the workflow permission to clone repo and deploy to gh-pages branch
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: 'pages'
@@ -37,3 +39,4 @@ jobs:
         with:
           folder: dist
           branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
