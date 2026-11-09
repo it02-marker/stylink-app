@@ -142,7 +142,7 @@ export default function ProductDetailPage() {
               <div className="bg-slate-50 border border-gray-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl sm:text-3xl font-black text-brand-orange">
-                    Wholesale & Retail
+
                   </span>
                   <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                     / Direct Stock
