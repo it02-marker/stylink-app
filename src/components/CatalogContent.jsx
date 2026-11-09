@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { catalogCategories, catalogItems } from '../data/catalog';
+import { catalogCategories, catalogItems, brandLogosMap } from '../data/catalog';
 import { contactInfo } from '../data/navigation';
 import ProductModal from './ProductModal';
 
@@ -409,8 +409,18 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                         {item.brand && (
-                          <div className="absolute top-2 left-2 bg-brand-navy/90 text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-none border border-white/20">
-                            {item.brand}
+                          <div className="absolute top-2 left-2 bg-white/95 rounded-none px-2 py-1 shadow-md border border-gray-200 flex items-center justify-center h-7 max-w-[85px] backdrop-blur-sm">
+                            {brandLogosMap[item.brand] ? (
+                              <img
+                                src={brandLogosMap[item.brand]}
+                                alt={item.brand}
+                                className="max-h-full max-w-full object-contain"
+                              />
+                            ) : (
+                              <span className="text-[9px] font-black text-brand-navy uppercase tracking-wider">
+                                {item.brand}
+                              </span>
+                            )}
                           </div>
                         )}
 

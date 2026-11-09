@@ -17,6 +17,16 @@ export const catalogBrands = [
   'TOYOTA DYNA',
 ];
 
+export const brandLogosMap = {
+  'HINO': 'https://www.carlogos.org/car-logos/hino-logo-1994.png',
+  'ISUZU': 'https://www.carlogos.org/car-logos/isuzu-logo-1991.png',
+  'UD TRUCKS': 'https://www.carlogos.org/car-logos/ud-logo-2010.png',
+  'FUSO': 'https://www.carlogos.org/car-logos/mitsubishi-logo-1964.png',
+  'TOYOTA DYNA': 'https://www.carlogos.org/car-logos/toyota-logo-2020.png',
+  'SCANIA': 'https://www.carlogos.org/car-logos/scania-logo-1969.png',
+  'VOLVO': 'https://www.carlogos.org/car-logos/volvo-logo-2014.png',
+};
+
 export const catalogItems = [
   {
     id: 'hino-clutch-plate',

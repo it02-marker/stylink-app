@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { brandLogosMap } from '../data/catalog';
 
 export default function ProductModal({ item, onClose, contactInfo, onCopyOem, copiedId }) {
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
           {/* Main Visual & Key Data */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Image */}
-            <div className="relative h-56 sm:h-64 bg-gray-900 border border-gray-200 overflow-hidden group">
+            <div className="relative h-56 sm:h-64 bg-slate-900 border border-gray-200 overflow-hidden group flex items-center justify-center">
               {item.image ? (
                 <img
                   src={item.image}
@@ -69,6 +70,24 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
                   <i className="fa-solid fa-truck text-4xl"></i>
                 </div>
               )}
+
+              {/* Brand Logo overlay in the top corner of the modal image */}
+              {item.brand && (
+                <div className="absolute top-3 left-3 bg-white/95 px-2.5 py-1.5 shadow-md border border-gray-200 flex items-center justify-center h-8 max-w-[100px] backdrop-blur-sm">
+                  {brandLogosMap[item.brand] ? (
+                    <img
+                      src={brandLogosMap[item.brand]}
+                      alt={item.brand}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-[10px] font-black text-brand-navy uppercase tracking-wider">
+                      {item.brand}
+                    </span>
+                  )}
+                </div>
+              )}
+
               {item.availability && (
                 <div className="absolute bottom-2 left-2 bg-black/85 text-emerald-400 text-[10px] font-bold px-2.5 py-1 border border-emerald-500/40 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>

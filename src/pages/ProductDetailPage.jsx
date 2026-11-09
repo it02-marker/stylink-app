@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { catalogItems } from '../data/catalog';
+import { catalogItems, brandLogosMap } from '../data/catalog';
 import { contactInfo } from '../data/navigation';
 
 export default function ProductDetailPage() {
@@ -101,12 +101,22 @@ export default function ProductDetailPage() {
             <div className="lg:col-span-5 flex flex-col items-center">
               <div className="w-full bg-slate-50 border border-gray-200 rounded-none p-6 sm:p-10 flex items-center justify-center relative min-h-[360px] sm:min-h-[460px] group shadow-inner">
                 {product.brand && (
-                  <span className="absolute top-4 left-4 bg-brand-navy text-white text-[11px] font-black uppercase tracking-widest px-3 py-1 border border-white/20">
-                    {product.brand}
-                  </span>
+                  <div className="absolute top-4 left-4 bg-white/95 px-3 py-1.5 shadow-md border border-gray-200 flex items-center justify-center h-9 max-w-[110px] backdrop-blur-sm z-10">
+                    {brandLogosMap[product.brand] ? (
+                      <img
+                        src={brandLogosMap[product.brand]}
+                        alt={product.brand}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    ) : (
+                      <span className="text-[11px] font-black text-brand-navy uppercase tracking-widest">
+                        {product.brand}
+                      </span>
+                    )}
+                  </div>
                 )}
                 {product.availability && (
-                  <span className="absolute top-4 right-4 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 flex items-center gap-1.5">
+                  <span className="absolute top-4 right-4 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 flex items-center gap-1.5 z-10">
                     <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                     {product.availability}
                   </span>
@@ -273,9 +283,19 @@ export default function ProductDetailPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {item.brand && (
-                      <span className="absolute top-2 left-2 bg-brand-navy text-white text-[9px] font-bold uppercase px-2 py-0.5 border border-white/20">
-                        {item.brand}
-                      </span>
+                      <div className="absolute top-2 left-2 bg-white/95 px-2 py-1 shadow-sm border border-gray-200 flex items-center justify-center h-6 max-w-[75px] backdrop-blur-sm z-10">
+                        {brandLogosMap[item.brand] ? (
+                          <img
+                            src={brandLogosMap[item.brand]}
+                            alt={item.brand}
+                            className="max-h-full max-w-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-[8px] font-black text-brand-navy uppercase tracking-wider">
+                            {item.brand}
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                   <div className="p-3.5 space-y-1.5">
@@ -302,3 +322,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+
