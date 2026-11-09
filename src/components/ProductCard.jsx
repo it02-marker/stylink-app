@@ -1,8 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ProductCard({ item }) {
   return (
-    <div className="bg-white border border-brand-border rounded-xl overflow-hidden group hover:border-brand-orange transition-all duration-300 shadow-sm flex flex-col h-full">
+    <Link
+      to={`/catalog`}
+      className="bg-white border border-brand-border rounded-xl overflow-hidden group hover:border-brand-orange transition-all duration-300 shadow-sm flex flex-col h-full cursor-pointer"
+      title={`View ${item.brand} Parts in Catalog`}
+    >
       {/* Top Image Area - Increased height from h-40 to h-56 */}
       <div className="h-56 overflow-hidden bg-brand-navy relative">
         <img
@@ -10,6 +15,9 @@ export default function ProductCard({ item }) {
           alt={item.imageAlt}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-orange text-white text-[10px] font-bold uppercase px-2 py-1 tracking-wider shadow">
+          Explore Spares <i className="fa-solid fa-arrow-right ml-1"></i>
+        </div>
       </div>
 
       {/* Bottom Bar: Logo | Name and subtext - Added py-6 for extra vertical height */}
@@ -28,12 +36,12 @@ export default function ProductCard({ item }) {
 
         {/* Name and Other Text */}
         <div className="flex-grow">
-          <h4 className="text-lg font-black text-brand-navy uppercase tracking-tight leading-none mb-1">
+          <h4 className="text-lg font-black text-brand-navy uppercase tracking-tight leading-none mb-1 group-hover:text-brand-orange transition">
             {item.brand}
           </h4>
           <p className="text-[11px] text-gray-500 leading-tight">{item.tagline}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

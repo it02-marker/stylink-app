@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { catalogCategories, catalogItems } from '../data/catalog';
 import { contactInfo } from '../data/navigation';
+import ProductModal from './ProductModal';
 
 export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -8,6 +9,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const copyTimeoutRef = useRef(null);
 
@@ -390,7 +392,8 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                 {filteredItems.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-white rounded-none border border-gray-300 hover:border-brand-orange transition-all duration-150 flex flex-col justify-between group h-full"
+                    onClick={() => setSelectedProduct(item)}
+                    className="bg-white rounded-none border border-gray-300 hover:border-brand-orange hover:shadow-md transition-all duration-150 flex flex-col justify-between group h-full cursor-pointer"
                   >
                     <div className="space-y-3">
                       <div className="relative h-44 bg-gray-900 overflow-hidden">
@@ -409,6 +412,10 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                             {item.brand}
                           </div>
                         )}
+
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-orange text-white text-[9px] font-bold uppercase px-1.5 py-0.5 tracking-wider shadow">
+                          View Info
+                        </div>
                       </div>
 
                       <div className="px-3 space-y-2">
@@ -422,7 +429,10 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                             <span className="font-bold text-[10px]">{item.oemNumber}</span>
                             <button
                               type="button"
-                              onClick={() => handleCopyOem(item.id, item.oemNumber)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyOem(item.id, item.oemNumber);
+                              }}
                               className="text-gray-400 hover:text-brand-orange transition ml-0.5"
                               title="Copy OEM"
                             >
@@ -436,9 +446,12 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                       </div>
                     </div>
 
-                    {/* Icon-only compact buttons aligned to the right */}
-                    <div className="p-3 pt-4 flex items-center justify-end">
-                      <div className="flex items-center gap-1.5">
+                    {/* Footer bar with View Details prompt + icon-only actions */}
+                    <div className="p-3 pt-4 flex items-center justify-between border-t border-gray-100 mt-2">
+                      <span className="text-[10px] font-bold text-brand-orange uppercase tracking-wider group-hover:underline flex items-center gap-1">
+                        Details <i className="fa-solid fa-arrow-right text-[8px]"></i>
+                      </span>
+                      <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                         <a
                           href={getWhatsAppLink(item)}
                           target="_blank"
@@ -484,6 +497,17 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
           </div>
         </div>
       </div>
+
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <ProductModal
+          item={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          contactInfo={contactInfo}
+          onCopyOem={handleCopyOem}
+          copiedId={copiedId}
+        />
+      )}
     </section>
   );
 }
