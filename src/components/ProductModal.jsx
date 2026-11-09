@@ -185,3 +185,4 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
     </div>
   );
 }
+

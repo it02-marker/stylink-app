@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { catalogCategories, catalogItems } from '../data/catalog';
 import { contactInfo } from '../data/navigation';
 import ProductModal from './ProductModal';
@@ -390,9 +391,9 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
             {filteredItems.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
                 {filteredItems.map((item) => (
-                  <div
+                  <Link
                     key={item.id}
-                    onClick={() => setSelectedProduct(item)}
+                    to={`/catalog/${item.id}`}
                     className="bg-white rounded-none border border-gray-300 hover:border-brand-orange hover:shadow-md transition-all duration-150 flex flex-col justify-between group h-full cursor-pointer"
                   >
                     <div className="space-y-3">
@@ -414,7 +415,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                         )}
 
                         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-orange text-white text-[9px] font-bold uppercase px-1.5 py-0.5 tracking-wider shadow">
-                          View Info
+                          View Part
                         </div>
                       </div>
 
@@ -430,6 +431,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                             <button
                               type="button"
                               onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 handleCopyOem(item.id, item.oemNumber);
                               }}
@@ -449,9 +451,15 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                     {/* Footer bar with View Details prompt + icon-only actions */}
                     <div className="p-3 pt-4 flex items-center justify-between border-t border-gray-100 mt-2">
                       <span className="text-[10px] font-bold text-brand-orange uppercase tracking-wider group-hover:underline flex items-center gap-1">
-                        Details <i className="fa-solid fa-arrow-right text-[8px]"></i>
+                        View Details <i className="fa-solid fa-arrow-right text-[8px]"></i>
                       </span>
-                      <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="flex items-center gap-1.5"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
                         <a
                           href={getWhatsAppLink(item)}
                           target="_blank"
@@ -474,7 +482,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
