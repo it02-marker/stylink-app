@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { heroSlides } from '../data/slides';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function Hero() {
+  const { slides: heroSlides } = useSiteData();
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = heroSlides.length;
   const autoSwapSpeed = 4000;
@@ -49,10 +50,11 @@ export default function Hero() {
 
   const translatePercent = -(currentSlide * (100 / totalSlides));
 
+  if (!heroSlides.length) return null;
   return (
     <section
       id="home"
-      className="relative h-screen min-h-[600px] w-full flex items-center overflow-hidden bg-brand-navy"
+      className="relative h-[calc(100dvh-5rem)] w-full flex items-center overflow-hidden bg-brand-navy"
     >
       {/* Background Image Slides Container (Slide Window) */}
       <div
@@ -106,15 +108,15 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Overlay */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20">
-        <div className="max-w-3xl">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 uppercase tracking-tight leading-[1.1] drop-shadow-md">
-            Helping You <br /> <span className="text-brand-orange">Not To Stop</span>
+      <div className="site-container relative z-20 text-center">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="mx-auto mb-6 max-w-[16ch] text-balance text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-md">
+            Helping You <span className="text-brand-orange">Not To Stop</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-xl font-light drop-shadow">
+          <p className="mx-auto max-w-xl text-lg md:text-xl text-gray-200 mb-10 font-light drop-shadow">
             We are here to keep your trucks on the road with genuine, OEM-quality parts for all major heavy-duty brands.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/outlets"
               className="px-8 py-4 bg-brand-orange text-white font-bold text-sm uppercase tracking-wider hover:bg-orange-700 transition shadow-lg inline-flex items-center gap-2"
@@ -128,4 +130,3 @@ export default function Hero() {
     </section>
   );
 }
-

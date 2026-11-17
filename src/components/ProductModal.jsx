@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { brandLogosMap } from '../data/catalog';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function ProductModal({ item, onClose, contactInfo, onCopyOem, copiedId }) {
+  const { brandLogosMap } = useSiteData();
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
@@ -58,7 +59,7 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
           {/* Main Visual & Key Data */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Image */}
-            <div className="relative h-56 sm:h-64 bg-slate-900 border border-gray-200 overflow-hidden group flex items-center justify-center">
+            <div className="relative h-56 sm:h-64 overflow-hidden group flex items-center justify-center">
               {item.image ? (
                 <img
                   src={item.image}
@@ -130,23 +131,23 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
               )}
 
               {/* Action Buttons inside Quick Specs */}
-              <div className="pt-2 flex flex-col sm:flex-row gap-2">
+              <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+                  className="min-h-12 rounded-lg bg-transparent px-4 py-3 text-xs font-bold uppercase tracking-wide text-emerald-700 transition-colors hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 flex items-center justify-center gap-2 text-center"
                 >
-                  <i className="fa-brands fa-whatsapp text-sm"></i>
-                  <span>WhatsApp Inquiry</span>
+                  <i className="fa-brands fa-whatsapp text-base"></i>
+                  <span>Ask about availability</span>
                 </a>
                 {contactInfo?.primaryTel && (
                   <a
                     href={contactInfo.primaryTel}
-                    className="py-2.5 px-4 bg-brand-navy hover:bg-brand-orange text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+                    className="min-h-12 rounded-lg bg-transparent px-4 py-3 text-xs font-bold uppercase tracking-wide text-brand-navy transition-colors hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy flex items-center justify-center gap-2 text-center"
                   >
-                    <i className="fa-solid fa-phone text-xs"></i>
-                    <span>Call Branch</span>
+                    <i className="fa-solid fa-phone text-sm"></i>
+                    <span>Call sales desk</span>
                   </a>
                 )}
               </div>
@@ -197,4 +198,3 @@ export default function ProductModal({ item, onClose, contactInfo, onCopyOem, co
     </div>
   );
 }
-

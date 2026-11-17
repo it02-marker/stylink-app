@@ -1,25 +1,27 @@
 import React from 'react';
-import { companyOverview } from '../data/company';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function About() {
+  const { company: companyOverview } = useSiteData();
+
+  if (!companyOverview) return null;
   return (
     <section id="about" className="py-20 bg-white border-b border-brand-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-16">
+      <div className="site-container">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-12 text-center">
           {/* Left: 60% Profile & Vision/Mission */}
-          <div className="lg:w-3/5">
+          <div className="w-full">
             <h3 className="text-3xl md:text-4xl font-extrabold text-brand-navy uppercase tracking-tight mb-6">
               {companyOverview.title}
             </h3>
 
-            <div className="prose max-w-none text-gray-600 mb-10 text-base leading-relaxed">
+            <div className="prose mx-auto max-w-3xl text-gray-600 mb-10 text-base leading-relaxed">
               <p className="mb-6">
                 <strong className="text-brand-navy font-bold">{companyOverview.name}</strong>{' '}
                 {companyOverview.description}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-brand-border pt-8">
+            <div className="grid w-full grid-cols-1 gap-8 border-t border-brand-border pt-8 md:grid-cols-2">
               <div>
                 <h4 className="text-sm font-bold text-brand-navy uppercase mb-3">
                   <i className="fa-solid fa-bullseye text-brand-orange mr-2"></i> Our Mission
@@ -39,8 +41,8 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right: 40% Core Values (Clean List format) */}
-          <div className="lg:w-2/5 bg-brand-slate p-8 lg:p-10 border border-brand-border">
+          {/* Core Values */}
+          <div className="w-full bg-brand-slate p-8 lg:p-10 border border-brand-border text-left">
             <h3 className="text-xl font-bold text-brand-navy uppercase tracking-wide mb-8 border-b-2 border-brand-navy pb-4">
               Core Values
             </h3>
@@ -64,4 +66,3 @@ export default function About() {
     </section>
   );
 }
-

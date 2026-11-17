@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function CatalogHero() {
   return (
-    <section className="relative bg-brand-navy pt-28 pb-20 overflow-hidden border-b border-white/10">
+    <section className="relative bg-brand-navy pt-24 pb-12 sm:pt-28 sm:pb-16 overflow-hidden border-b border-white/10">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
@@ -18,9 +18,9 @@ export default function CatalogHero() {
       {/* Decorative Brand Accent */}
       <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="site-container relative z-10 text-center">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-6">
+        <div className="mb-5 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400 sm:mb-6 sm:text-xs">
           <Link to="/" className="hover:text-brand-orange transition">
             Home
           </Link>
@@ -29,13 +29,13 @@ export default function CatalogHero() {
         </div>
 
         {/* Hero Title & Subtext */}
-        <div className="max-w-3xl mb-8">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-tight mb-6">
+        <div className="mx-auto mb-6 max-w-3xl sm:mb-8">
+          <h1 className="text-3xl min-[380px]:text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-tight mb-4 sm:mb-6">
             Truck Spares <br />
             <span className="text-brand-orange">Parts Catalog</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-300 leading-relaxed font-light mb-8 max-w-2xl">
+          <p className="mx-auto mb-6 max-w-2xl text-sm font-light leading-relaxed text-gray-300 sm:mb-8 sm:text-base lg:text-lg">
             Browse our comprehensive inventory of genuine Japanese truck spares and heavy-duty commercial auto parts.
             Direct delivery to workshops across Zimbabwe or counter pickup in Harare & Bulawayo.
           </p>

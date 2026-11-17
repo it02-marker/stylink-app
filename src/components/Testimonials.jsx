@@ -1,12 +1,13 @@
 import React from 'react';
-import { testimonialsData } from '../data/testimonials';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function Testimonials() {
+  const { testimonials: testimonialsData } = useSiteData();
+
   return (
     <section id="testimonials" className="py-20 bg-white border-t border-brand-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+        <div className="mb-12 flex flex-col items-center gap-4 text-center">
           <div>
             <h3 className="text-3xl font-extrabold text-brand-navy uppercase tracking-tight">
               What Fleet Operators Say
@@ -28,16 +29,16 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="flex gap-6 lg:gap-8 overflow-x-auto pb-2 snap-x snap-mandatory">
           {testimonialsData.map((item, index) => (
             <div
               key={index}
-              className="bg-[#eef2f6] rounded-2xl p-7 sm:p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300"
+              className="flex-[1_0_280px] snap-start bg-[#eef2f6] rounded-2xl p-7 sm:p-8 flex flex-col justify-between text-center shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div>
                 {/* Header: Avatar + Info (Left) & Red Stars (Right) */}
-                <div className="flex items-start justify-between gap-3 mb-5">
-                  <div className="flex items-center gap-3.5">
+                <div className="mb-5 flex flex-col items-center gap-3">
+                  <div className="flex flex-col items-center gap-2">
                     <img
                       src={item.avatar}
                       alt={item.author}
@@ -54,7 +55,7 @@ export default function Testimonials() {
                   </div>
 
                   {/* Red Stars */}
-                  <div className="flex text-red-500 text-sm gap-0.5 pt-1 flex-shrink-0">
+                  <div className="flex text-red-500 text-sm gap-0.5">
                     {[...Array(item.rating || 5)].map((_, i) => (
                       <i key={i} className="fa-solid fa-star"></i>
                     ))}

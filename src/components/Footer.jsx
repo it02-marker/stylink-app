@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { contactInfo } from '../data/navigation';
-import { branchesData } from '../data/branches';
-import { socialLinks } from '../data/socials';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function Footer() {
+  const { contactInfo, branches: branchesData, socialLinks } = useSiteData();
+
   const currentYear = new Date().getFullYear();
 
   return (
@@ -19,7 +18,7 @@ export default function Footer() {
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/95 via-brand-navy/85 to-brand-navyDark/95 z-0" />
 
       {/* Content Overlay Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20 pb-10">
+      <div className="site-container relative z-10 pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Col */}
           <div>
@@ -110,4 +109,3 @@ export default function Footer() {
     </footer>
   );
 }
-

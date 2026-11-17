@@ -10,6 +10,76 @@
   }
 }
 
+@layer components {
+  .site-container {
+    @apply w-full px-4 sm:px-6 lg:px-8 2xl:px-10;
+  }
+
+  .sleek-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #ea580c #e5e7eb;
+  }
+
+  .sleek-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .sleek-scrollbar::-webkit-scrollbar-track {
+    background: #e5e7eb;
+  }
+
+  .sleek-scrollbar::-webkit-scrollbar-thumb {
+    background: #ea580c;
+    border-radius: 9999px;
+  }
+
+  .sleek-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c2410c;
+  }
+
+  .hide-native-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .hide-native-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  .flat-design,
+  .flat-design *,
+  .flat-design *::before,
+  .flat-design *::after {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .flat-design :focus-visible {
+    outline: 2px solid #ea580c;
+    outline-offset: 2px;
+  }
+
+  .flat-design .site-navbar {
+    box-shadow: 0 2px 8px rgb(10 25 47 / 0.12) !important;
+  }
+
+  .flat-design button:not([class*="rounded-full"]),
+  .flat-design a[class*="px-"][class*="py-"]:not([class*="rounded-full"]) {
+    border-radius: 0.5rem !important;
+    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  }
+
+  .flat-design form[role="search"] {
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+
+  .flat-design form[role="search"] button {
+    border-radius: 0 !important;
+  }
+}
+
 /* Marquee Animation */
 @keyframes scroll {
   0% {
@@ -29,4 +99,3 @@
 .marquee-container:hover .animate-marquee {
   animation-play-state: paused;
 }
-

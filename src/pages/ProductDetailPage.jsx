@@ -1,17 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { catalogItems, brandLogosMap } from '../data/catalog';
-import { contactInfo } from '../data/navigation';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function ProductDetailPage() {
+  const { catalogItems, brandLogosMap, contactInfo, loading } = useSiteData();
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const relatedScrollRef = useRef(null);
+  const scrollbarTrackRef = useRef(null);
+  const [scrollbar, setScrollbar] = useState({
+    thumbSize: 100,
+    position: 0,
+    hasOverflow: false,
+  });
+
+  const updateScrollbar = useCallback(() => {
+    const scroller = relatedScrollRef.current;
+    if (!scroller) return;
+
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    setScrollbar({
+      thumbSize: maxScroll > 0
+        ? (scroller.clientWidth / scroller.scrollWidth) * 100
+        : 100,
+      position: maxScroll > 0 ? (scroller.scrollLeft / maxScroll) * 100 : 0,
+      hasOverflow: maxScroll > 0,
+    });
+  }, []);
+
+  const handleScrollbarClick = (event) => {
+    const track = scrollbarTrackRef.current;
+    const scroller = relatedScrollRef.current;
+    if (!track || !scroller) return;
+
+    const trackRect = track.getBoundingClientRect();
+    const clickRatio = (event.clientX - trackRect.left) / trackRect.width;
+    scroller.scrollTo({
+      left: clickRatio * (scroller.scrollWidth - scroller.clientWidth),
+      behavior: 'smooth',
+    });
+  };
 
   // Scroll to top when product changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
+
+  useEffect(() => {
+    const scroller = relatedScrollRef.current;
+    if (!scroller) return undefined;
+
+    updateScrollbar();
+    const resizeObserver = new ResizeObserver(updateScrollbar);
+    resizeObserver.observe(scroller);
+    window.addEventListener('resize', updateScrollbar);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateScrollbar);
+    };
+  }, [updateScrollbar, catalogItems, id]);
 
   // Find product
   const product = catalogItems.find((item) => item.id === id);
@@ -49,9 +98,6 @@ export default function ProductDetailPage() {
       : [...relatedItems, ...catalogItems.filter((i) => i.id !== product.id && !relatedItems.includes(i))]
   ).slice(0, 10);
 
-  // Quadruple for smooth infinite marquee loop
-  const marqueeItems = [...finalRelated, ...finalRelated, ...finalRelated, ...finalRelated];
-
   const handleCopyOem = () => {
     if (product.oemNumber) {
       navigator.clipboard.writeText(product.oemNumber);
@@ -64,11 +110,12 @@ export default function ProductDetailPage() {
   const whatsappMsg = `Hi Stylink Truck Parts, I am inquiring about the ${product.brand || ''} ${product.name || ''} (OEM: ${product.oemNumber || 'N/A'}). Please confirm availability and pricing.`;
   const whatsappLink = `${baseUrl}?text=${encodeURIComponent(whatsappMsg)}`;
 
+  if (loading) return <div className="py-32 text-center text-gray-600">Loading part details...</div>;
   return (
     <div className="bg-white min-h-screen">
       {/* Breadcrumb Bar */}
       <div className="bg-gray-50 border-b border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+        <div className="site-container py-3.5 flex items-center justify-between">
           <nav className="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider">
             <Link to="/" className="text-brand-orange hover:underline">
               Home
@@ -95,11 +142,11 @@ export default function ProductDetailPage() {
 
       {/* Main Full-Width Product Showcase Section */}
       <section className="py-10 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
             {/* Left Column: Product Image Display (lg: 5 cols) */}
             <div className="lg:col-span-5 flex flex-col items-center">
-              <div className="w-full bg-slate-50 border border-gray-200 rounded-none p-6 sm:p-10 flex items-center justify-center relative min-h-[360px] sm:min-h-[460px] group shadow-inner">
+              <div className="w-full p-6 sm:p-10 flex items-center justify-center relative min-h-[360px] sm:min-h-[460px] group">
                 {product.brand && (
                   <div className="absolute top-4 left-4 bg-white/95 px-3 py-1.5 shadow-md border border-gray-200 flex items-center justify-center h-9 max-w-[110px] backdrop-blur-sm z-10">
                     {brandLogosMap[product.brand] ? (
@@ -211,7 +258,7 @@ export default function ProductDetailPage() {
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-sm text-center"
+                  className="flex-1 rounded-lg bg-transparent px-6 py-4 text-xs font-black uppercase tracking-wider text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 flex items-center justify-center gap-2 text-center sm:text-sm"
                 >
                   <i className="fa-brands fa-whatsapp text-lg"></i>
                   <span>Enquire Pricing on WhatsApp</span>
@@ -219,7 +266,7 @@ export default function ProductDetailPage() {
                 {contactInfo?.primaryTel && (
                   <a
                     href={contactInfo.primaryTel}
-                    className="py-4 px-6 bg-brand-navy hover:bg-brand-orange text-white font-black text-xs sm:text-sm uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+                    className="rounded-lg bg-transparent px-6 py-4 text-xs font-black uppercase tracking-wider text-brand-navy transition hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-navy flex items-center justify-center gap-2 text-center sm:text-sm"
                   >
                     <i className="fa-solid fa-phone text-sm"></i>
                     <span>Call Sales Desk</span>
@@ -233,35 +280,40 @@ export default function ProductDetailPage() {
 
       {/* Underneath: Moving Marquee of Related Catalogue Items */}
       <section className="py-12 bg-slate-50 border-t border-brand-border overflow-hidden marquee-container">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col sm:flex-row justify-between items-baseline gap-2">
+        <div className="site-container mb-8 flex flex-col items-center gap-3 text-center">
           <div>
-            <span className="text-[10px] font-black uppercase text-brand-orange tracking-widest block">
+            <span className="text-xs sm:text-sm font-black uppercase text-brand-orange tracking-widest block">
               Related Spares
             </span>
-            <h3 className="text-xl sm:text-2xl font-black text-brand-navy uppercase tracking-tight">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-navy uppercase tracking-tight">
               More {product.brand} & {product.category} Parts
             </h3>
           </div>
           <Link
             to="/catalog"
-            className="text-xs font-bold uppercase text-brand-navy hover:text-brand-orange transition flex items-center gap-1.5"
+            className="text-sm sm:text-base font-bold uppercase text-brand-navy hover:text-brand-orange transition flex items-center justify-center gap-2"
           >
             <span>View All Catalogue Items</span>
-            <i className="fa-solid fa-arrow-right text-[10px]"></i>
+            <i className="fa-solid fa-arrow-right text-xs"></i>
           </Link>
         </div>
 
-        {/* Infinite Moving Marquee Track of Product Cards */}
-        <div className="relative w-full flex overflow-hidden py-3">
-          <div className="animate-marquee gap-5 items-stretch px-4">
-            {marqueeItems.map((item, idx) => (
-              <Link
-                key={`${item.id}-${idx}`}
-                to={`/catalog/${item.id}`}
-                className="w-64 sm:w-72 bg-white border border-gray-200 hover:border-brand-orange transition-all duration-300 flex-shrink-0 flex flex-col justify-between group shadow-sm hover:shadow-md cursor-pointer"
-              >
+        {/* Horizontally scrollable related product cards */}
+        <div className="site-container">
+          <div
+            id="related-spares-scroll"
+            ref={relatedScrollRef}
+            onScroll={updateScrollbar}
+            className="hide-native-scrollbar flex snap-x snap-mandatory gap-8 overflow-x-auto py-5"
+          >
+              {finalRelated.map((item) => (
+                <Link
+                  key={item.id}
+                  to={`/catalog/${item.id}`}
+                  className="group flex w-72 shrink-0 snap-start flex-col justify-between bg-white transition-all duration-300 cursor-pointer sm:w-80"
+                >
                 <div>
-                  <div className="h-44 bg-gray-900 overflow-hidden relative">
+                  <div className="h-56 overflow-hidden relative sm:h-64">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -283,28 +335,57 @@ export default function ProductDetailPage() {
                       </div>
                     )}
                   </div>
-                  <div className="p-3.5 space-y-1.5">
-                    <h4 className="text-xs font-bold text-brand-navy uppercase leading-snug line-clamp-2 group-hover:text-brand-orange transition min-h-[2rem]">
+                  <div className="space-y-3 p-5">
+                    <h4 className="min-h-[2.5rem] text-sm font-bold uppercase leading-snug text-brand-navy line-clamp-2 transition group-hover:text-brand-orange">
                       {item.name}
                     </h4>
                     {item.oemNumber && (
-                      <p className="text-[10px] font-mono text-gray-500 truncate">
+                      <p className="truncate font-mono text-xs text-gray-500">
                         OEM: <span className="font-bold text-gray-700">{item.oemNumber}</span>
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="p-3 pt-0 flex items-center justify-between text-[11px] font-bold text-brand-orange uppercase tracking-wider">
+                <div className="flex items-center justify-between px-5 pb-5 pt-2 text-xs font-bold uppercase tracking-wider text-brand-orange">
                   <span>View Details</span>
                   <i className="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
                 </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
           </div>
+          {scrollbar.hasOverflow && (
+            <div
+              ref={scrollbarTrackRef}
+              role="scrollbar"
+              aria-label="Scroll related spare parts"
+              aria-controls="related-spares-scroll"
+              aria-orientation="horizontal"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(scrollbar.position)}
+              tabIndex={0}
+              onClick={handleScrollbarClick}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowLeft') {
+                  relatedScrollRef.current?.scrollBy({ left: -160, behavior: 'smooth' });
+                } else if (event.key === 'ArrowRight') {
+                  relatedScrollRef.current?.scrollBy({ left: 160, behavior: 'smooth' });
+                }
+              }}
+              className="relative mt-2 h-2 cursor-pointer rounded-full bg-gray-200"
+            >
+              <span
+                className="absolute left-0 top-0 h-full rounded-full bg-brand-orange transition-[width,transform] duration-150"
+                style={{
+                  width: `${scrollbar.thumbSize}%`,
+                  transform: `translateX(${scrollbar.position * ((100 - scrollbar.thumbSize) / scrollbar.thumbSize)}%)`,
+                }}
+              />
+            </div>
+          )}
         </div>
       </section>
     </div>
   );
 }
-

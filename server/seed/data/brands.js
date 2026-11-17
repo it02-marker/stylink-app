@@ -29,5 +29,10 @@ export const brandLogos = [
     alt: 'Volvo Parts',
     logoUrl: 'https://www.carlogos.org/car-logos/volvo-logo-2014.png',
   },
+  {
+    name: 'edeel',
+    alt: 'edeel Parts',
+    logoUrl: 'https://www.carlogos.org/car-logos/volvo-logo-2014.png',
+  },
 ];
 

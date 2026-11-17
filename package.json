@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node --watch server/index.js",
+    "dev:full": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -16,8 +18,22 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^10.0.7",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.7"
-  }
+  },
+  "description": "A modern, component-based React application for **Stylink Truck Parts (Private) Limited** — wholesale and retail supplier of heavy-duty truck and commercial auto parts in Zimbabwe.",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/it02-marker/stylink-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/it02-marker/stylink-app/issues"
+  },
+  "homepage": "https://github.com/it02-marker/stylink-app#readme"
 }

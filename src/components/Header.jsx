@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
-import { navLinks, contactInfo } from '../data/navigation';
-
+import React, { useEffect, useState } from 'react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSiteData } from '../context/SiteDataContext';
 export default function Header() {
+  const { navLinks, contactInfo } = useSiteData();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setSearchTerm(new URLSearchParams(location.search).get('search') || '');
+  }, [location.search]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -14,6 +21,36 @@ export default function Header() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const query = searchTerm.trim();
+    navigate(query ? `/catalog?search=${encodeURIComponent(query)}` : '/catalog');
+    closeMobileMenu();
+  };
+
+  const renderSearchForm = (id, className = '') => (
+    <form onSubmit={handleSearch} role="search" className={`flex ${className}`}>
+      <label htmlFor={id} className="sr-only">
+        Search truck parts
+      </label>
+      <input
+        id={id}
+        type="search"
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+        placeholder="Search parts or OEM..."
+        className="min-w-0 flex-1 border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:border-brand-orange focus:outline-none focus:ring-1 focus:ring-brand-orange"
+      />
+      <button
+        type="submit"
+        aria-label="Search catalog"
+        className="shrink-0 bg-brand-navy px-3 text-white transition hover:bg-brand-orange"
+      >
+        <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+    </form>
+  );
+
   const isLinkActive = (item) => {
     if (item.path === '/' && location.pathname === '/' && !location.hash) return true;
     if (item.path !== '/' && location.pathname === item.path) return true;
@@ -21,8 +58,8 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-brand-border shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="site-navbar sticky top-0 z-50 bg-white border-b border-brand-border">
+      <div className="site-container">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
@@ -32,21 +69,21 @@ export default function Header() {
                 alt="Stylink Truck Parts Logo"
                 className="h-10 sm:h-12 w-auto object-contain"
               />
-              <span className="text-2xl font-black tracking-tighter text-brand-navy uppercase hidden sm:block">
+              <span className="text-xl xl:text-2xl font-black tracking-tighter text-brand-navy uppercase hidden sm:block">
                 Stylink <span className="text-gray-400 font-light">Truck Parts</span>
               </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8 items-center">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navLinks.map((item) => {
               const active = isLinkActive(item);
               return (
                 <NavLink
                   key={item.label}
                   to={item.path}
-                  className={`text-sm uppercase tracking-wide transition relative py-1 ${
+                  className={`text-xs xl:text-sm uppercase tracking-wide transition relative py-1 ${
                     active
                       ? 'font-bold text-brand-orange border-b-2 border-brand-orange'
                       : 'font-semibold text-brand-navy hover:text-brand-orange'
@@ -58,14 +95,15 @@ export default function Header() {
             })}
             <a
               href={contactInfo.primaryTel}
-              className="ml-4 px-6 py-2.5 bg-brand-orange text-white text-sm font-bold uppercase tracking-wider hover:bg-orange-700 transition shadow-sm"
+              className="px-4 xl:px-6 py-2.5 bg-brand-orange text-white text-xs xl:text-sm font-bold uppercase tracking-wider hover:bg-orange-700 transition shadow-sm"
             >
               Call Now
             </a>
+            {renderSearchForm('navbar-search-desktop', 'w-48 xl:w-56')}
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               id="mobile-menu-btn"
               onClick={toggleMobileMenu}
@@ -84,8 +122,9 @@ export default function Header() {
         id="mobile-menu"
         className={`${
           isMobileMenuOpen ? 'flex' : 'hidden'
-        } md:hidden flex-col bg-white border-b border-brand-border px-4 py-4 space-y-3 transition-all duration-300`}
+        } lg:hidden flex-col bg-white border-b border-brand-border px-4 py-4 space-y-3 transition-all duration-300`}
       >
+        {renderSearchForm('navbar-search-mobile', 'w-full mb-2')}
         {navLinks.map((item) => {
           const active = isLinkActive(item);
           return (

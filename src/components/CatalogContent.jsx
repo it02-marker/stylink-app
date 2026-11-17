@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { catalogCategories, catalogItems, brandLogosMap } from '../data/catalog';
-import { contactInfo } from '../data/navigation';
+import { Link, useSearchParams } from 'react-router-dom';
 import ProductModal from './ProductModal';
 
+import { useSiteData } from '../context/SiteDataContext';
 export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
-  const [selectedBrands, setSelectedBrands] = useState([]);
+  const { catalogCategories, catalogBrands, catalogItems, brandLogosMap, contactInfo } = useSiteData();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedBrands = searchParams.getAll('brand');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
@@ -16,13 +18,13 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
 
   const filterableCategories = useMemo(
     () => catalogCategories.filter((c) => c.id !== 'all'),
-    []
+    [catalogCategories]
   );
 
   const filterableBrands = useMemo(() => {
-    const brandsSet = new Set(catalogItems.map((item) => item.brand).filter(Boolean));
-    return Array.from(brandsSet).sort();
-  }, []);
+    const filterBrands = catalogBrands.filter((brand) => brand !== 'All Brands');
+    return [...new Set(filterBrands)].sort();
+  }, [catalogBrands]);
 
   const { brandCounts, categoryCounts } = useMemo(() => {
     const bCounts = {};
@@ -37,7 +39,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
     });
 
     return { brandCounts: bCounts, categoryCounts: cCounts };
-  }, [filterableBrands, filterableCategories]);
+  }, [catalogItems, filterableBrands, filterableCategories]);
 
   useEffect(() => {
     document.body.style.overflow = isMobileFiltersOpen ? 'hidden' : '';
@@ -55,9 +57,14 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
   }, []);
 
   const handleBrandToggle = (brand) => {
-    setSelectedBrands((prev) =>
-      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
-    );
+    const nextParams = new URLSearchParams(searchParams);
+    const currentBrands = nextParams.getAll('brand');
+    nextParams.delete('brand');
+    const nextBrands = currentBrands.includes(brand)
+      ? currentBrands.filter((currentBrand) => currentBrand !== brand)
+      : [...currentBrands, brand];
+    nextBrands.forEach((currentBrand) => nextParams.append('brand', currentBrand));
+    setSearchParams(nextParams, { replace: true });
   };
 
   const handleCategoryToggle = (catId) => {
@@ -67,10 +74,12 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
   };
 
   const handleClearAll = () => {
-    setSelectedBrands([]);
     setSelectedCategories([]);
     setInStockOnly(false);
-    if (setSearchQuery) setSearchQuery('');
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('brand');
+    nextParams.delete('search');
+    setSearchParams(nextParams, { replace: true });
   };
 
   const filteredItems = useMemo(() => {
@@ -97,7 +106,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
 
       return true;
     });
-  }, [selectedBrands, selectedCategories, inStockOnly, searchQuery]);
+  }, [catalogItems, selectedBrands, selectedCategories, inStockOnly, searchQuery]);
 
   const activeFiltersCount =
     selectedBrands.length +
@@ -252,7 +261,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
 
   return (
     <section id="catalog-grid" className="py-8 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         <div className="lg:hidden mb-4 flex items-center justify-between bg-white p-3 rounded-none border border-gray-300">
           <div>
             <h2 className="text-sm font-bold text-brand-navy uppercase">Catalog</h2>
@@ -273,14 +282,18 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-gray-300">
-          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mr-1">
+        <div className="flex flex-nowrap lg:flex-wrap items-center gap-2 mb-5 pb-4 border-b border-gray-300 overflow-x-auto lg:overflow-visible">
+          <span className="shrink-0 text-[11px] font-bold text-gray-500 uppercase tracking-wider mr-1">
             Filter by Brand:
           </span>
           <button
             type="button"
-            onClick={() => setSelectedBrands([])}
-            className={`px-3 py-1.5 text-xs font-bold uppercase transition border ${
+            onClick={() => {
+              const nextParams = new URLSearchParams(searchParams);
+              nextParams.delete('brand');
+              setSearchParams(nextParams, { replace: true });
+            }}
+            className={`shrink-0 px-3 py-1.5 text-xs font-bold uppercase transition border ${
               selectedBrands.length === 0
                 ? 'bg-brand-navy text-white border-brand-navy'
                 : 'bg-white text-gray-700 border-gray-300 hover:border-brand-orange'
@@ -296,7 +309,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                 key={brand}
                 type="button"
                 onClick={() => handleBrandToggle(brand)}
-                className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase transition border ${
+                className={`flex shrink-0 items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase transition border ${
                   isSelected
                     ? 'bg-brand-orange text-white border-brand-orange shadow-sm'
                     : 'bg-white text-gray-700 border-gray-300 hover:border-brand-orange hover:bg-gray-50'
@@ -327,8 +340,8 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                 className="fixed inset-0 bg-black/60 transition-opacity"
                 onClick={() => setIsMobileFiltersOpen(false)}
               />
-              <div className="relative ml-auto w-full max-w-xs h-full bg-white p-4 shadow-none border-l border-gray-300 overflow-y-auto flex flex-col justify-between z-10">
-                <div>
+              <div className="relative ml-auto w-[min(90vw,24rem)] h-dvh bg-white p-4 shadow-none border-l border-gray-300 flex flex-col z-10">
+                <div className="flex-1 overflow-y-auto">
                   <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-300">
                     <h3 className="font-bold text-brand-navy uppercase text-xs">
                       Filters
@@ -345,7 +358,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                   {renderSidebarFilters()}
                 </div>
 
-                <div className="pt-4 mt-6 border-t border-gray-300">
+                <div className="pt-4 mt-4 border-t border-gray-300 bg-white">
                   <button
                     type="button"
                     onClick={() => setIsMobileFiltersOpen(false)}
@@ -358,7 +371,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
             </div>
           )}
 
-          <div className="flex-grow w-full space-y-4">
+          <div className="min-w-0 flex-1 space-y-4">
             <div className="bg-white p-3.5 rounded-none border border-gray-300 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="relative flex-grow max-w-sm">
@@ -437,7 +450,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
             </div>
 
             {filteredItems.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                 {filteredItems.map((item) => (
                   <Link
                     key={item.id}
@@ -483,9 +496,9 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                         </h3>
 
                         {item.oemNumber && (
-                          <div className="inline-flex items-center gap-1.5 bg-gray-100 rounded-none px-2 py-0.5 text-[10px] text-gray-700 font-mono border border-gray-200">
+                          <div className="inline-flex max-w-full flex-wrap items-center gap-1.5 bg-gray-100 rounded-none px-2 py-0.5 text-[10px] text-gray-700 font-mono border border-gray-200">
                             <span className="text-gray-400 font-sans text-[9px] font-bold">OEM:</span>
-                            <span className="font-bold text-[10px]">{item.oemNumber}</span>
+                            <span className="min-w-0 break-all font-bold text-[10px]">{item.oemNumber}</span>
                             <button
                               type="button"
                               onClick={(e) => {

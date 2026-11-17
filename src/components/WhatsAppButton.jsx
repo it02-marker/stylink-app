@@ -1,7 +1,8 @@
 import React from 'react';
-import { contactInfo } from '../data/navigation';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function WhatsAppButton() {
+  const { contactInfo } = useSiteData();
+
   return (
     <a
       href={contactInfo.whatsappUrl}

@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ProductCard({ item }) {
+export default function BrandCard({ brand }) {
   return (
     <Link
-      to={`/catalog`}
+      to={`/catalog?brand=${encodeURIComponent(brand.brand)}`}
       className="bg-white border border-brand-border rounded-xl overflow-hidden group hover:border-brand-orange transition-all duration-300 shadow-sm flex flex-col h-full cursor-pointer"
-      title={`View ${item.brand} Parts in Catalog`}
+      title={`View ${brand.brand} Parts in Catalog`}
     >
       {/* Top Image Area - Increased height from h-40 to h-56 */}
       <div className="h-56 overflow-hidden bg-brand-navy relative">
         <img
-          src={item.image}
-          alt={item.imageAlt}
+          src={brand.image}
+          alt={brand.imageAlt}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-orange text-white text-[10px] font-bold uppercase px-2 py-1 tracking-wider shadow">
@@ -25,8 +25,8 @@ export default function ProductCard({ item }) {
         {/* Logo */}
         <div className="w-20 h-12 flex-shrink-0 flex items-center justify-center p-1">
           <img
-            src={item.logo}
-            alt={`${item.brand} Parts`}
+            src={brand.logo}
+            alt={`${brand.brand} Parts`}
             className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition"
           />
         </div>
@@ -37,9 +37,9 @@ export default function ProductCard({ item }) {
         {/* Name and Other Text */}
         <div className="flex-grow">
           <h4 className="text-lg font-black text-brand-navy uppercase tracking-tight leading-none mb-1 group-hover:text-brand-orange transition">
-            {item.brand}
+            {brand.brand}
           </h4>
-          <p className="text-[11px] text-gray-500 leading-tight">{item.tagline}</p>
+          <p className="text-[11px] text-gray-500 leading-tight">{brand.tagline}</p>
         </div>
       </div>
     </Link>

@@ -1,9 +1,10 @@
 import React from 'react';
 import OutletsHero from '../components/OutletsHero';
 import BrandsMarquee from '../components/BrandsMarquee';
-import { contactInfo } from '../data/navigation';
-
+import { useSiteData } from '../context/SiteDataContext';
 export default function OutletsPage() {
+  const { contactInfo } = useSiteData();
+
   return (
     <>
       <OutletsHero />
@@ -11,7 +12,7 @@ export default function OutletsPage() {
 
       {/* Branch Details & Service Information */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="site-container">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl font-extrabold text-brand-navy uppercase tracking-tight">
               Fast Commercial Spares Dispatch
