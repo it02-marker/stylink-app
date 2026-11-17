@@ -15,11 +15,3 @@ export async function createInquiry(req, res) {
     res.status(400).json({ success: false, error: err.message });
   }
 }
-
-export async function getInquiries(req, res) {
-  const list = await Inquiry.find()
-    .populate('branch', 'name phone')
-    .populate('catalogItem', 'name oemNumbers')
-    .sort({ createdAt: -1 });
-  res.json(list);
-}

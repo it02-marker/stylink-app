@@ -6,6 +6,9 @@ npm-debug.log*
 node_modules
 dist
 .vite
+.env
+.env.*
+!.env.example
 
 # Editor
 .vscode

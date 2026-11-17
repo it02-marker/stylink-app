@@ -81,4 +81,10 @@ The optimized static assets will be output to the `dist/` folder.
 npm run preview
 ```
 
+## Deploy on Vercel
+
+Import this repository in Vercel with the repository root as the project root. The included `vercel.json` configures the Vite build and SPA routing, and `api/[...path].js` serves the Express API as a Vercel Function.
+
+Before deploying, add `MONGODB_URI` in the Vercel project's Environment Variables for the environments you use. Rotate any MongoDB credentials that have been committed to Git history; do not reuse them or commit `.env` files.
+
 # stylink-website
