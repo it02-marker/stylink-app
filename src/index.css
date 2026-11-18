@@ -64,6 +64,10 @@
     box-shadow: none !important;
   }
 
+  .flat-design .hero-cta-outline {
+    border-color: #fff !important;
+  }
+
   .flat-design :focus-visible {
     outline: 2px solid #ea580c;
     outline-offset: 2px;

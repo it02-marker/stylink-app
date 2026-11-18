@@ -9,7 +9,7 @@ export default function CatalogHero() {
   if (!content) return null;
 
   return (
-    <section className="relative min-h-[clamp(26rem,72svh,34rem)] sm:min-h-[80dvh] flex items-start sm:items-center bg-brand-navy pt-8 pb-16 sm:py-24 overflow-hidden border-b border-white/10">
+    <section className="relative min-h-[clamp(26rem,72svh,34rem)] sm:min-h-[80dvh] flex items-center bg-brand-navy py-16 sm:py-24 overflow-hidden border-b border-white/10">
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: content.imageUrl ? `url("${content.imageUrl}")` : 'none' }}

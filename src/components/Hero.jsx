@@ -41,7 +41,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[clamp(26rem,72svh,34rem)] sm:min-h-[80dvh] w-full flex items-start pt-8 pb-20 sm:items-center sm:py-24 overflow-hidden bg-brand-navy"
+      className="relative min-h-[clamp(26rem,72svh,34rem)] sm:min-h-[80dvh] w-full flex items-center py-16 sm:py-24 overflow-hidden bg-brand-navy"
     >
       {/* Background Image Slides Container (Slide Window) */}
       <div
@@ -89,9 +89,9 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap justify-center gap-3 sm:mt-12 sm:gap-4">
             <Link
               to="/outlets"
-              className="px-5 py-3 sm:px-8 sm:py-4 border border-white bg-transparent text-white font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-brand-navy transition shadow-lg inline-flex items-center gap-2"
+              className="hero-cta-outline inline-flex rounded-full border border-white bg-transparent px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-brand-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:px-8 sm:py-3.5 sm:text-sm"
             >
-              <span>{content.ctaLabel}</span>
+              {content.ctaLabel}
             </Link>
           </div>
         </div>
