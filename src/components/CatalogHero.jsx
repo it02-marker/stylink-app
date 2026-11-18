@@ -16,7 +16,8 @@ export default function CatalogHero() {
         role={content.imageAlt ? 'img' : undefined}
         aria-label={content.imageAlt || undefined}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/70 via-brand-navy/50 to-brand-navyDark/30 z-0" />
+      <div className="subtle-backdrop-blur absolute inset-0 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/40 via-brand-navy/25 to-brand-navyDark/15 z-0" />
 
       <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
 

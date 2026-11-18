@@ -11,12 +11,13 @@ export default function AboutHero() {
   return (
     <section className="relative min-h-[80dvh] flex items-center bg-brand-navy pt-28 pb-20 overflow-hidden border-b border-white/10">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-50 z-0"
+        className="absolute inset-0 bg-cover bg-center opacity-70 z-0"
         style={{ backgroundImage: content.imageUrl ? `url("${content.imageUrl}")` : 'none' }}
         role={content.imageAlt ? 'img' : undefined}
         aria-label={content.imageAlt || undefined}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/40 via-brand-navy/30 to-brand-navyDark/20 z-0" />
+      <div className="subtle-backdrop-blur absolute inset-0 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/25 via-brand-navy/15 to-brand-navyDark/10 z-0" />
 
       <div className="absolute -right-24 -top-24 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute left-1/3 -bottom-24 w-80 h-80 bg-brand-orange/10 rounded-full blur-2xl pointer-events-none" />

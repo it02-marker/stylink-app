@@ -76,6 +76,7 @@ export default function Hero() {
           </div>
         ))}
       </div>
+      <div className="subtle-backdrop-blur absolute inset-0 z-10 pointer-events-none" />
 
       {/* Navigation Controls (Inside Hero Only) */}
       <button

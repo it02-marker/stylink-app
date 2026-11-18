@@ -48,6 +48,11 @@
   .hide-native-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .subtle-backdrop-blur {
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
 }
 
 @layer base {

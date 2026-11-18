@@ -14,8 +14,10 @@ export default function Footer() {
         style={{ backgroundImage: `url('${contactInfo.footerBgUrl}')` }}
       />
 
+      <div className="subtle-backdrop-blur absolute inset-0 z-0" />
+
       {/* Hero-Style Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/95 via-brand-navy/85 to-brand-navyDark/95 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/70 via-brand-navy/55 to-brand-navyDark/70 z-0" />
 
       {/* Content Overlay Container */}
       <div className="site-container relative z-10 pt-20 pb-10">
