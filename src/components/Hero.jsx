@@ -41,7 +41,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative h-[80dvh] w-full flex items-center overflow-hidden bg-brand-navy"
+      className="relative h-[80dvh] w-full flex items-start pt-10 sm:items-center sm:pt-0 overflow-hidden bg-brand-navy"
     >
       {/* Background Image Slides Container (Slide Window) */}
       <div
@@ -78,18 +78,18 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Overlay */}
-      <div className="site-container relative z-20 text-center">
+      <div className="site-container relative z-20 pt-6 sm:pt-0 text-center">
         <div className="mx-auto max-w-3xl">
-          <h1 className="mx-auto mb-6 max-w-[16ch] text-balance text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-md">
+          <h1 className="mx-auto mb-4 sm:mb-6 max-w-[16ch] text-balance text-[clamp(1.75rem,8vw,5.5rem)] font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-md">
             {content.title}
           </h1>
-          <p className="mx-auto max-w-xl text-lg md:text-xl text-gray-200 mb-10 font-light drop-shadow">
+          <p className="mx-auto max-w-xl text-[clamp(0.875rem,2.5vw,1.25rem)] text-gray-200 mb-6 sm:mb-10 font-light drop-shadow">
             {content.description}
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             <Link
               to="/outlets"
-              className="px-8 py-4 bg-brand-orange text-white font-bold text-sm uppercase tracking-wider hover:bg-orange-700 transition shadow-lg inline-flex items-center gap-2"
+              className="px-5 py-3 sm:px-8 sm:py-4 bg-brand-orange text-white font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-orange-700 transition shadow-lg inline-flex items-center gap-2"
             >
               <span>{content.ctaLabel}</span>
               <i className="fa-solid fa-arrow-right text-xs"></i>

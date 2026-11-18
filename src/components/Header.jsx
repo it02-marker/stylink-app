@@ -39,7 +39,7 @@ export default function Header() {
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
         placeholder="Search parts or OEM..."
-        className="min-w-0 flex-1 border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 focus:border-brand-orange focus:outline-none focus:ring-1 focus:ring-brand-orange"
+        className="min-w-0 flex-1 border border-gray-300 bg-gray-50 px-3 py-2 text-xs sm:text-sm text-gray-900 placeholder:text-gray-500 focus:border-brand-orange focus:outline-none focus:ring-1 focus:ring-brand-orange"
       />
       <button
         type="submit"
@@ -60,16 +60,16 @@ export default function Header() {
   return (
     <header className="site-navbar sticky top-0 z-50 bg-white border-b border-brand-border">
       <div className="site-container">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-14 sm:h-16 lg:h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3">
               <img
                 src={contactInfo.logoUrl}
                 alt="Stylink Truck Parts Logo"
-                className="h-10 sm:h-12 w-auto object-contain"
+                className="h-8 sm:h-10 lg:h-12 w-auto object-contain"
               />
-              <span className="text-xl xl:text-2xl font-black tracking-tighter text-brand-navy uppercase hidden sm:block">
+              <span className="text-sm sm:text-base lg:text-xl xl:text-2xl font-black tracking-tighter text-brand-navy uppercase">
                 Stylink <span className="text-gray-400 font-light">Truck Parts</span>
               </span>
             </Link>
@@ -109,47 +109,62 @@ export default function Header() {
               onClick={toggleMobileMenu}
               aria-label="Toggle mobile menu"
               aria-expanded={isMobileMenuOpen}
-              className="text-brand-navy focus:outline-none p-2"
+              aria-controls="mobile-menu"
+              className="text-brand-navy focus:outline-none p-1.5 sm:p-2"
             >
-              <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-2xl`}></i>
+              <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-xl sm:text-2xl`}></i>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Nav */}
-      <div
-        id="mobile-menu"
-        className={`${
-          isMobileMenuOpen ? 'flex' : 'hidden'
-        } lg:hidden flex-col bg-white border-b border-brand-border px-4 py-4 space-y-3 transition-all duration-300`}
-      >
-        {renderSearchForm('navbar-search-mobile', 'w-full mb-2')}
-        {navLinks.map((item) => {
-          const active = isLinkActive(item);
-          return (
-            <NavLink
-              key={item.label}
-              to={item.path}
-              onClick={closeMobileMenu}
-              className={`block text-sm uppercase py-1 ${
-                active
-                  ? 'font-bold text-brand-orange'
-                  : 'font-semibold text-brand-navy hover:text-brand-orange'
-              }`}
-            >
-              {item.label}
-            </NavLink>
-          );
-        })}
-        <a
-          href={contactInfo.primaryTel}
+      <>
+        <button
+          type="button"
+          aria-label="Close mobile menu"
+          aria-hidden={!isMobileMenuOpen}
+          tabIndex={isMobileMenuOpen ? 0 : -1}
           onClick={closeMobileMenu}
-          className="inline-block mt-2 px-6 py-2.5 bg-brand-orange text-white text-sm font-bold uppercase tracking-wider text-center hover:bg-orange-700 transition"
+          className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 ease-in-out lg:hidden ${
+            isMobileMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+          }`}
+        />
+        <nav
+          id="mobile-menu"
+          aria-label="Mobile navigation"
+          aria-hidden={!isMobileMenuOpen}
+          inert={!isMobileMenuOpen}
+          className={`fixed right-0 top-14 z-50 flex h-[calc(100dvh-3.5rem)] w-[min(85vw,20rem)] flex-col gap-4 overflow-y-auto border-l border-brand-border bg-white px-5 py-5 shadow-xl transition-transform duration-300 ease-in-out sm:top-16 sm:h-[calc(100dvh-4rem)] lg:hidden ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
         >
-          Call Now
-        </a>
-      </div>
+          {renderSearchForm('navbar-search-mobile', 'w-full mb-2')}
+          {navLinks.map((item) => {
+            const active = isLinkActive(item);
+            return (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                onClick={closeMobileMenu}
+                className={`block text-xs sm:text-sm uppercase py-1 ${
+                  active
+                    ? 'font-bold text-brand-orange'
+                    : 'font-semibold text-brand-navy hover:text-brand-orange'
+                }`}
+              >
+                {item.label}
+              </NavLink>
+            );
+          })}
+          <a
+            href={contactInfo.primaryTel}
+            onClick={closeMobileMenu}
+            className="inline-block mt-2 px-6 py-2.5 bg-brand-orange text-white text-xs sm:text-sm font-bold uppercase tracking-wider text-center hover:bg-orange-700 transition"
+          >
+            Call Now
+          </a>
+        </nav>
+      </>
     </header>
   );
 }

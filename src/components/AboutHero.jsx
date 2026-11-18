@@ -9,7 +9,7 @@ export default function AboutHero() {
   if (!content) return null;
 
   return (
-    <section className="relative min-h-[80dvh] flex items-center bg-brand-navy pt-28 pb-20 overflow-hidden border-b border-white/10">
+    <section className="relative min-h-[80dvh] flex items-start sm:items-center bg-brand-navy pt-10 sm:pt-28 pb-20 overflow-hidden border-b border-white/10">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-70 z-0"
         style={{ backgroundImage: content.imageUrl ? `url("${content.imageUrl}")` : 'none' }}
@@ -23,7 +23,7 @@ export default function AboutHero() {
       <div className="absolute left-1/3 -bottom-24 w-80 h-80 bg-brand-orange/10 rounded-full blur-2xl pointer-events-none" />
 
       <div className="site-container relative z-10 text-center">
-        <div className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
+        <div className="mb-6 sm:mb-8 hidden items-center justify-center gap-2 text-[clamp(0.625rem,1.8vw,0.75rem)] font-semibold uppercase tracking-wider text-gray-400 sm:flex">
           <Link to="/" className="hover:text-brand-orange transition">
             Home
           </Link>
@@ -33,11 +33,11 @@ export default function AboutHero() {
 
         <div className="grid grid-cols-1 items-center gap-12">
           <div className="mx-auto max-w-4xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] mb-6">
+            <h1 className="text-[clamp(1.75rem,7vw,3.75rem)] font-black text-white tracking-tight uppercase leading-[1.1] mb-4 sm:mb-6">
               {content.title}
             </h1>
 
-            <p className="mx-auto mb-8 max-w-2xl text-base font-light leading-relaxed text-gray-300 sm:text-lg">
+            <p className="mx-auto mb-6 sm:mb-8 max-w-2xl text-[clamp(0.875rem,2.5vw,1.125rem)] font-light leading-relaxed text-gray-300">
               {content.description}
             </p>
           </div>
