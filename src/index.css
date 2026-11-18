@@ -11,8 +11,12 @@
 }
 
 @layer components {
+  .admin-input {
+    @apply mt-2 block w-full border border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500;
+  }
+
   .site-container {
-    @apply w-full px-4 sm:px-6 lg:px-8 2xl:px-10;
+    @apply mx-auto w-full max-w-[1800px] px-4 sm:px-6 lg:px-8 2xl:px-10;
   }
 
   .sleek-scrollbar {

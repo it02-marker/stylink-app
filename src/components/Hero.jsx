@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../context/SiteDataContext';
 export default function Hero() {
-  const { slides: heroSlides } = useSiteData();
+  const { slides: heroSlides, heroSections } = useSiteData();
+  const content = heroSections.home;
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = heroSlides.length;
@@ -50,11 +51,11 @@ export default function Hero() {
 
   const translatePercent = -(currentSlide * (100 / totalSlides));
 
-  if (!heroSlides.length) return null;
+  if (!content || !heroSlides.length) return null;
   return (
     <section
       id="home"
-      className="relative h-[calc(100dvh-5rem)] w-full flex items-center overflow-hidden bg-brand-navy"
+      className="relative h-[80dvh] w-full flex items-center overflow-hidden bg-brand-navy"
     >
       {/* Background Image Slides Container (Slide Window) */}
       <div
@@ -111,17 +112,17 @@ export default function Hero() {
       <div className="site-container relative z-20 text-center">
         <div className="mx-auto max-w-3xl">
           <h1 className="mx-auto mb-6 max-w-[16ch] text-balance text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold uppercase leading-[1.05] tracking-tight text-white drop-shadow-md">
-            Helping You <span className="text-brand-orange">Not To Stop</span>
+            {content.title}
           </h1>
           <p className="mx-auto max-w-xl text-lg md:text-xl text-gray-200 mb-10 font-light drop-shadow">
-            We are here to keep your trucks on the road with genuine, OEM-quality parts for all major heavy-duty brands.
+            {content.description}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/outlets"
               className="px-8 py-4 bg-brand-orange text-white font-bold text-sm uppercase tracking-wider hover:bg-orange-700 transition shadow-lg inline-flex items-center gap-2"
             >
-              <span>Find a Branch</span>
+              <span>{content.ctaLabel}</span>
               <i className="fa-solid fa-arrow-right text-xs"></i>
             </Link>
           </div>

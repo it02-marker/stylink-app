@@ -2,44 +2,39 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../context/SiteDataContext';
 export default function OutletsHero() {
-  const { branches: branchesData, contactInfo } = useSiteData();
+  const { heroSections } = useSiteData();
+  const content = heroSections.outlets;
+
+  if (!content) return null;
 
   return (
-    <section className="relative bg-brand-navy pt-28 pb-20 overflow-hidden border-b border-white/10">
-      {/* Background Graphic */}
+    <section className="relative min-h-[80dvh] flex items-center bg-brand-navy pt-28 pb-20 overflow-hidden border-b border-white/10">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-50 z-0"
-        style={{
-          backgroundImage:
-            "url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/656198905_1475515537613537_2491431788241770214_n.jpg?stp=cp6_dst-jpegr_tt6&cstp=mx2048x1536&ctp=s2048x1536&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-Bo7LWjOjkMQ7kNvwF3meJR&_nc_oc=AdohcQz5o7FMKX1wKlMFAmf4rUZ5cRywDgKWkcyrcLLhvmBWuWEF6Bczq_d5x5N4xw4&_nc_zt=23&se=-1&_nc_ht=scontent-jnb2-1.xx&_nc_gid=o7txYCHs2VMcHWSQXpmmJQ&_nc_ss=7b2a8&oh=00_AQQz49u8QFIzCaiFETCJNpqG_UyuvK23VQ--V18-vRxzfA&oe=6AF3D83C')",
-        }}
+        style={{ backgroundImage: content.imageUrl ? `url("${content.imageUrl}")` : 'none' }}
+        role={content.imageAlt ? 'img' : undefined}
+        aria-label={content.imageAlt || undefined}
       />
-      {/* Increased Gradient Transparency */}
       <div className="absolute inset-0 bg-gradient-to-r from-brand-navyDark/40 via-brand-navy/30 to-brand-navyDark/20 z-0" />
 
-      {/* Decorative Brand Accent */}
       <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="site-container relative z-10 text-center">
-        {/* Breadcrumb */}
         <div className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
           <Link to="/" className="hover:text-brand-orange transition">
             Home
           </Link>
           <span className="text-brand-orange">/</span>
-          <span className="text-white">Our Outlets & Branches</span>
+          <span className="text-white">{content.breadcrumb}</span>
         </div>
 
-        {/* Title */}
         <div className="mx-auto mb-12 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.1] mb-6">
-            Visit Our Branches <br />
-            <span className="text-brand-orange">In Harare & Bulawayo</span>
+            {content.title}
           </h1>
 
           <p className="text-base font-light leading-relaxed text-gray-300 sm:text-lg">
-            Conveniently located for workshops, transport operators, and cross-border commercial fleets.
-            Walk into any branch for immediate counter service or call directly for countrywide delivery.
+            {content.description}
           </p>
         </div>
       </div>

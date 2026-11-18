@@ -5,28 +5,29 @@ export default function BrandCard({ brand }) {
   return (
     <Link
       to={`/catalog?brand=${encodeURIComponent(brand.brand)}`}
+      draggable="false"
       className="bg-white border border-brand-border rounded-xl overflow-hidden group hover:border-brand-orange transition-all duration-300 shadow-sm flex flex-col h-full cursor-pointer"
       title={`View ${brand.brand} Parts in Catalog`}
     >
-      {/* Top Image Area - Increased height from h-40 to h-56 */}
-      <div className="h-56 overflow-hidden bg-brand-navy relative">
+      <div className="h-64 overflow-hidden bg-brand-navy relative sm:h-72">
         <img
           src={brand.image}
           alt={brand.imageAlt}
+          draggable="false"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-orange text-white text-[10px] font-bold uppercase px-2 py-1 tracking-wider shadow">
-          Explore Spares <i className="fa-solid fa-arrow-right ml-1"></i>
+        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px] font-bold uppercase tracking-wider drop-shadow-md">
+          Explore Spares
         </div>
       </div>
 
-      {/* Bottom Bar: Logo | Name and subtext - Added py-6 for extra vertical height */}
-      <div className="p-5 py-6 bg-white flex items-center border-t border-brand-border flex-grow">
+      <div className="p-5 py-7 bg-white flex items-center border-t border-brand-border flex-grow">
         {/* Logo */}
         <div className="w-20 h-12 flex-shrink-0 flex items-center justify-center p-1">
           <img
             src={brand.logo}
             alt={`${brand.brand} Parts`}
+            draggable="false"
             className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition"
           />
         </div>

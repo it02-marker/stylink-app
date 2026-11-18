@@ -81,6 +81,14 @@ The optimized static assets will be output to the `dist/` folder.
 npm run preview
 ```
 
+## Admin product portal
+
+Open `/#/admin` to sign in and manage all database data. On first login, the configured `ADMIN_PASSWORD` environment variable is migrated into the database as a salted scrypt hash; after this initial setup, authentication uses the database credential and `ADMIN_PASSWORD` can be removed. Use the admin page's **Change admin password** form to update it; new passwords must be at least 12 characters. Password changes invalidate other active admin sessions. If `ADMIN_SESSION_SECRET` is omitted, the backend generates a temporary random secret for that process. Sessions signed with an auto-generated secret become invalid when the backend restarts, so configure a stable private secret for production. Admin sessions use an expiring, HttpOnly cookie, and admin changes require a same-origin request.
+
+The admin portal's **Manage all database data** section can create, edit, and permanently delete records in every application collection: products, brands, categories, branches, slides, hero sections, features, testimonials, company settings, and customer inquiries. Hero section records control the headings, highlighted text, descriptions, breadcrumb labels, background images, and optional calls to action on the home, about, catalog, and outlets pages. Every schema field is available through a form, including nested fields and repeatable lists; an advanced JSON mode is also available. When creating records in advanced mode, submit one object or an array of up to 50 records for bulk insertion. MongoDB Extended JSON `$oid` references and JSON-encoded array fields are normalized for imports. Select multiple records on a page for bulk deletion, or use the delete button on an individual record. Records are validated against their Mongoose schema, while IDs and timestamps are managed by the server. Deleting a record may affect other records that reference it.
+
+To add the default hero-section records to an existing database without replacing other data or overwriting existing hero edits, run `npm run seed:hero-sections`. The regular full database seed also includes these defaults, but clears and recreates the other seeded collections.
+
 ## Deploy on Vercel
 
 Import this repository in Vercel with the repository root as the project root. The included `vercel.json` configures the Vite build and SPA routing, and `api/[...path].js` serves the Express API as a Vercel Function.

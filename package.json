@@ -7,6 +7,9 @@
     "dev": "vite",
     "server": "node --watch server/index.js",
     "dev:full": "concurrently \"npm run dev\" \"npm run server\"",
+    "seed:hero-sections": "node server/seed/seed-hero-sections.js",
+    "migrate:hero-titles": "node server/seed/migrate-hero-titles.js",
+    "migrate:slide-names": "node server/seed/migrate-slide-names.js",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -113,6 +113,10 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
     selectedCategories.length +
     (inStockOnly ? 1 : 0) +
     (searchQuery ? 1 : 0);
+  const activeNonBrandFiltersCount =
+    selectedCategories.length +
+    (inStockOnly ? 1 : 0) +
+    (searchQuery ? 1 : 0);
 
   const handleCopyOem = (id, oem) => {
     if (!oem) return;
@@ -399,18 +403,9 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                 </div>
               </div>
 
-              {activeFiltersCount > 0 && (
+              {activeNonBrandFiltersCount > 0 && (
                 <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-200">
                   <span className="text-[10px] font-bold text-gray-400 uppercase mr-1">Active:</span>
-
-                  {selectedBrands.map((brand) => (
-                    <span key={brand} className="inline-flex items-center gap-1.5 px-2 py-1 bg-brand-navy text-white text-[10px] font-medium rounded-none">
-                      <span>{brand}</span>
-                      <button type="button" onClick={() => handleBrandToggle(brand)} className="hover:text-brand-orange text-[9px]">
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
-                    </span>
-                  ))}
 
                   {selectedCategories.map((catId) => {
                     const catObj = filterableCategories.find((c) => c.id === catId);
@@ -519,11 +514,7 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                       </div>
                     </div>
 
-                    {/* Footer bar with View Details prompt + icon-only actions */}
-                    <div className="p-3 pt-4 flex items-center justify-between border-t border-gray-100 mt-2">
-                      <span className="text-[10px] font-bold text-brand-orange uppercase tracking-wider group-hover:underline flex items-center gap-1">
-                        View Details <i className="fa-solid fa-arrow-right text-[8px]"></i>
-                      </span>
+                    <div className="p-3 pt-4 flex items-center justify-center border-t border-gray-100 mt-2">
                       <div
                         className="flex items-center gap-1.5"
                         onClick={(e) => {
@@ -535,20 +526,21 @@ export default function CatalogContent({ searchQuery = '', setSearchQuery }) {
                           href={getWhatsAppLink(item)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-7 h-7 bg-emerald-600 hover:bg-emerald-700 text-white rounded-none transition flex items-center justify-center"
+                          className="inline-flex h-9 items-center gap-2 rounded-full border border-brand-navy bg-gray-50 px-4 text-[10px] font-bold uppercase tracking-wide text-brand-navy transition hover:bg-brand-orange hover:border-brand-orange hover:text-white"
                           title="Enquire on WhatsApp"
                           aria-label="Enquire on WhatsApp"
                         >
-                          <i className="fa-brands fa-whatsapp text-xs"></i>
+                          <i className="fa-brands fa-whatsapp text-sm"></i>
+                          <span>WhatsApp</span>
                         </a>
                         {contactInfo?.primaryTel && (
                           <a
                             href={contactInfo.primaryTel}
-                            className="w-7 h-7 bg-gray-100 hover:bg-brand-navy hover:text-white text-gray-700 rounded-none transition flex items-center justify-center border border-gray-200"
+                            className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-navy bg-gray-50 text-brand-navy transition hover:bg-brand-orange hover:border-brand-orange hover:text-white"
                             title="Call Branch"
                             aria-label="Call Branch"
                           >
-                            <i className="fa-solid fa-phone text-[10px]"></i>
+                            <i className="fa-solid fa-phone text-xs"></i>
                           </a>
                         )}
                       </div>

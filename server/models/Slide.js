@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const slideSchema = new mongoose.Schema(
   {
     order: { type: Number, required: true, unique: true },
+    name: { type: String, required: true, trim: true },
     imageUrl: { type: String, required: true },
     alt: { type: String, required: true },
     isActive: { type: Boolean, default: true },

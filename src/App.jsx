@@ -8,13 +8,15 @@ import AboutPage from './pages/AboutPage';
 import OutletsPage from './pages/OutletsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { SiteDataProvider } from './context/SiteDataContext';
+import AdminPage from './pages/AdminPage';
 
 export default function App() {
   return (
-    <SiteDataProvider>
+    <div onDragStart={(event) => event.preventDefault()}>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<RootLayout />}>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/" element={<SiteDataProvider><RootLayout /></SiteDataProvider>}>
             <Route index element={<HomePage />} />
             <Route path="catalog" element={<CatalogPage />} />
             <Route path="catalog/:id" element={<ProductDetailPage />} />
@@ -24,6 +26,6 @@ export default function App() {
           </Route>
         </Routes>
       </HashRouter>
-    </SiteDataProvider>
+    </div>
   );
 }

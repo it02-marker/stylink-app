@@ -6,6 +6,7 @@ import Category from '../models/Category.js';
 import Branch from '../models/Branch.js';
 import CatalogItem from '../models/CatalogItem.js';
 import Slide from '../models/Slide.js';
+import HeroSection from '../models/HeroSection.js';
 import Feature from '../models/Feature.js';
 import Testimonial from '../models/Testimonial.js';
 import Company from '../models/Company.js';
@@ -20,6 +21,7 @@ import {
   catalogItems,
 } from './data/catalog.js';
 import { heroSlides } from './data/slides.js';
+import { heroSections } from './data/hero-sections.js';
 import { featuresData } from './data/features.js';
 import { testimonialsData } from './data/testimonials.js';
 import { companyOverview } from './data/company.js';
@@ -42,6 +44,7 @@ async function seed() {
       Branch.deleteMany({}),
       CatalogItem.deleteMany({}),
       Slide.deleteMany({}),
+      HeroSection.deleteMany({}),
       Feature.deleteMany({}),
       Testimonial.deleteMany({}),
       Company.deleteMany({}),
@@ -168,8 +171,14 @@ async function seed() {
     );
 
     // 5. Seed Slides, Features, Testimonials & Company Profile
-    const [slides, features, testimonials] = await Promise.all([
-      Slide.insertMany(heroSlides.map((s) => ({ order: s.id, imageUrl: s.imageUrl, alt: s.alt }))),
+    const [slides, heroSectionDocs, features, testimonials] = await Promise.all([
+      Slide.insertMany(heroSlides.map((s) => ({
+        order: s.id,
+        name: s.name,
+        imageUrl: s.imageUrl,
+        alt: s.alt,
+      }))),
+      HeroSection.insertMany(heroSections),
       Feature.insertMany(featuresData.map((f, idx) => ({ order: idx + 1, ...f }))),
       Testimonial.insertMany(testimonialsData),
       Company.create({
@@ -186,6 +195,7 @@ async function seed() {
     console.log(`✓ categories:    ${categoryDocs.length}`);
     console.log(`✓ catalog_items: ${catalogDocs.length} (linked to Brand, Category & Branch ObjectIds)`);
     console.log(`✓ slides:        ${slides.length}`);
+    console.log(`✓ hero sections: ${heroSectionDocs.length}`);
     console.log(`✓ features:      ${features.length}`);
     console.log(`✓ testimonials:  ${testimonials.length}`);
     console.log(`✓ company:       1 corporate profile document`);

@@ -101,8 +101,11 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase tracking-wide">
           <p>&copy; {currentYear} Stylink Truck Parts (Pvt) Ltd. All Rights Reserved.</p>
-          <div className="space-x-4">
+          <div className="flex items-center gap-4">
             <span className="text-gray-400">ITF263 / TIN / VAT Certified</span>
+            <Link to="/admin" className="text-gray-400 transition hover:text-white">
+              Admin
+            </Link>
           </div>
         </div>
       </div>
