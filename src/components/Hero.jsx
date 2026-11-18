@@ -14,10 +14,6 @@ export default function Hero() {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
   }, [totalSlides]);
 
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
-
   const goToSlide = (index) => {
     setCurrentSlide(index);
     resetTimer();
@@ -38,16 +34,6 @@ export default function Hero() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [startTimer]);
-
-  const handlePrev = () => {
-    prevSlide();
-    resetTimer();
-  };
-
-  const handleNext = () => {
-    nextSlide();
-    resetTimer();
-  };
 
   const translatePercent = -(currentSlide * (100 / totalSlides));
 
@@ -77,24 +63,6 @@ export default function Hero() {
         ))}
       </div>
       <div className="subtle-backdrop-blur absolute inset-0 z-10 pointer-events-none" />
-
-      {/* Navigation Controls (Inside Hero Only) */}
-      <button
-        id="prev-slide"
-        onClick={handlePrev}
-        aria-label="Previous slide"
-        className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center bg-brand-navy/50 border border-white/20 text-white hover:bg-brand-orange hover:border-brand-orange transition-all duration-300"
-      >
-        <i className="fa-solid fa-chevron-left text-lg"></i>
-      </button>
-      <button
-        id="next-slide"
-        onClick={handleNext}
-        aria-label="Next slide"
-        className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center bg-brand-navy/50 border border-white/20 text-white hover:bg-brand-orange hover:border-brand-orange transition-all duration-300"
-      >
-        <i className="fa-solid fa-chevron-right text-lg"></i>
-      </button>
 
       {/* Slide Dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
